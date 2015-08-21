@@ -1392,9 +1392,13 @@ function canvas_create(width, height) {
 /***********************************************************************
  * SPRITES
  ***********************************************************************/
-function __spr_ball() { 
-__sprite_init__(this, spr_ball, 22, 22, 11, 11, 'Circle', 8, 0, 22, 0, 22, ['img/spr_ball_0.png']);
-}; var spr_ball = new __spr_ball();
+function __spr_ball8() { 
+__sprite_init__(this, spr_ball8, 22, 22, 11, 11, 'Circle', 8, 0, 22, 0, 22, ['img/spr_ball8_0.png']);
+}; var spr_ball8 = new __spr_ball8();
+
+function __spr_ball16() { 
+__sprite_init__(this, spr_ball16, 36, 36, 18, 18, 'Circle', 16, 0, 36, 0, 36, ['img/spr_ball16_0.png']);
+}; var spr_ball16 = new __spr_ball16();
 
 
 
@@ -1425,7 +1429,7 @@ __font_init__(this, font, 'Times', 18, 1, 0)}; var font = new __font();
  * OBJECTS
  ***********************************************************************/
 function __obj_ball() {
-__instance_init__(this, obj_ball, null, 1, 0, spr_ball, 1, 15);
+__instance_init__(this, obj_ball, null, 1, 0, spr_ball8, 1, 15);
 this.on_creation = function() {
 with(this) {
 image_xscale = 0;
@@ -1436,10 +1440,20 @@ this.vy=0;
 
 this.fx=0; 
 this.fy=0;
-this.r = 8;
+this.r = choose(8,16);
 this.mass = this.r;
 
 this.vx=2-random(4); this.vy=2-random(4);
+
+if (this.r == 8)
+{
+	sprite_index = spr_ball8;
+}
+
+if (this.r == 16)
+{
+	sprite_index = spr_ball16;
+}
 }
 };
 this.on_destroy = on_destroy_i;
@@ -1553,21 +1567,21 @@ function __scene_12() {
 this.tiles = [
 ];
 this.objects = [
-[{o:obj_ball, x:522, y:199}],
-[{o:obj_ball, x:566, y:351}],
-[{o:obj_ball, x:408, y:149}],
-[{o:obj_ball, x:370, y:409}],
-[{o:obj_ball, x:510, y:443}],
-[{o:obj_ball, x:46, y:281}],
-[{o:obj_ball, x:68, y:397}],
-[{o:obj_ball, x:220, y:107}],
 [{o:obj_ball, x:152, y:75}],
 [{o:obj_ball, x:470, y:283}],
-[{o:obj_controller, x:337, y:83}],
+[{o:obj_ball, x:46, y:281}],
+[{o:obj_ball, x:220, y:107}],
 [{o:obj_ball, x:280, y:327}],
-[{o:obj_ball, x:237, y:208}],
 [{o:obj_ball, x:185, y:302}],
-[{o:obj_ball, x:136, y:191}]];
+[{o:obj_controller, x:337, y:83}],
+[{o:obj_ball, x:136, y:191}],
+[{o:obj_ball, x:237, y:208}],
+[{o:obj_ball, x:408, y:149}],
+[{o:obj_ball, x:370, y:409}],
+[{o:obj_ball, x:522, y:199}],
+[{o:obj_ball, x:510, y:443}],
+[{o:obj_ball, x:566, y:351}],
+[{o:obj_ball, x:68, y:397}]];
 this.start = function() {
 __room_start__(this, scene_12, 640, 480, 30, 210, 190, 190, null, 0, 0, 0, 640, 480, null, 50, 50);
 };
