@@ -1393,12 +1393,8 @@ function canvas_create(width, height) {
  * SPRITES
  ***********************************************************************/
 function __spr_ball8() { 
-__sprite_init__(this, spr_ball8, 22, 22, 11, 11, 'Circle', 8, 0, 22, 0, 22, ['img/spr_ball8_0.png']);
+__sprite_init__(this, spr_ball8, 16, 10, 6, 5, 'Circle', 6, 2, 25, 0, 16, ['img/spr_ball8_0.png']);
 }; var spr_ball8 = new __spr_ball8();
-
-function __spr_ball16() { 
-__sprite_init__(this, spr_ball16, 36, 36, 18, 18, 'Circle', 16, 0, 36, 0, 36, ['img/spr_ball16_0.png']);
-}; var spr_ball16 = new __spr_ball16();
 
 
 
@@ -1428,125 +1424,14 @@ __font_init__(this, font, 'Times', 14, 1, 0)}; var font = new __font();
 /***********************************************************************
  * OBJECTS
  ***********************************************************************/
-function __obj_ball() {
-__instance_init__(this, obj_ball, null, 1, -1, spr_ball8, 1, 53);
-this.on_creation = function() {
-with(this) {
-image_xscale = 0;
-image_yscale = 0;
-
-this.vx=0;
-this.vy=0;
-
-this.dir=0;
-this.spd=Math.sqrt(vx*vx + vy*vy);
-
-this.fx=0; 
-this.fy=0;
-this.r = choose(8,16);
-this.mass = this.r;
-
-this.vx=2-random(4); this.vy=2-random(4);
-
-if (this.r == 8)
-{
-	sprite_index = spr_ball8;
-}
-
-if (this.r == 16)
-{
-	sprite_index = spr_ball16;
-}
-}
-};
-this.on_destroy = on_destroy_i;
-this.on_step = function() {
-with(this) {
-if (image_xscale != 1)
-{
-    this.d =  1 - image_xscale;
-    image_xscale += this.d*0.1;
-    image_yscale = image_xscale;
-}
-
-x+=this.vx; 
-y+=this.vy;
-this.vx+=(this.fx/this.mass); 
-this.vy+=(this.fy/this.mass);
-this.fx=0; this.fy=0;
-this.fy += this.mass*grav;
-this.vx*=airfr; 
-this.vy*=airfr;
-
-this.dir = point_direction(xprevious,yprevious,x,y);
-this.spd = Math.sqrt(vx*vx + vy*vy);
-//console.log(spd);
-
-if (y > room_height - this.r) {y = room_height - this.r; this.vy*=-1;}
-if (y < this.r) {y = this.r; this.vy*=-1;}
-if (x < this.r) {x = this.r; this.vx*=-1;}
-if (x > room_width - this.r)  {this.x = room_width - this.r; this.vx*=-1;}
-
-if (keyboard_check_pressed(vk_space))
-{
-	this.vx=4 - random(4); this.vy=4 - random(4);
-}
-
-}
-};
-this.on_end_step = on_end_step_i;
-this.on_collision = function() {
-with(this) {
-this.other = this.place_meeting(this.x, this.y, obj_ball);
-if(this.other != null) {
-if (id != other)
-{
-	var b1,b2,jjj,dist,dx,dy,pv1x,pv1y,pv2x,pv2y;
-	b1 = id; b2 = other;
-	b1m = b1.mass; b2m = b2.mass;
-
-	dist = point_distance(b1.x,b1.y,b2.x,b2.y);
-
-	dx = b1.x-b2.x; dy = b1.y-b2.y;
-	if (dist < b1.r+b2.r)
-	{
-		jjj = ((b1.r+b2.r)/dist-1)/2;
-		b1.x += (dx)*jjj; b1.y += (dy)*jjj;
-		b2.x -= (dx)*jjj; b2.y -= (dy)*jjj;
-	}
-
-	dx /= dist; 
-	dy /= dist;
-	jjj = (b1.vx*dx+b1.vy*dy);
-	pv1x = dx*jjj; pv1y = dy*jjj;
-	jjj = (b2.vx*dx+b2.vy*dy);
-	pv2x = dx*jjj; pv2y = dy*jjj; 
-	jjj = (pv2x*2*b2.mass+pv1x*(b1.mass-b2.mass))/(b1.mass+b2.mass)-pv1x;
-	pv2x = (pv1x*2*b1.mass+pv2x*(b2.mass-b1.mass))/(b1.mass+b2.mass)-pv2x;
-	pv1x = jjj;
-	jjj = (pv2y*2*b2.mass+pv1y*(b1.mass-b2.mass))/(b1.mass+b2.mass)-pv1y;
-	pv2y = (pv1y*2*b1.mass+pv2y*(b2.mass-b1.mass))/(b1.mass+b2.mass)-pv2y;
-	pv1y = jjj; 
-	b1.vx += pv1x; b1.vy += pv1y;
-	b2.vx += pv2x; b2.vy += pv2y;
-}
-}
-}
-};
-this.on_roomstart = on_roomstart_i;
-this.on_roomend = on_roomend_i;
-this.on_animationend = on_animationend_i;
-this.on_draw = on_draw_i;
-}; var obj_ball = new __obj_ball();
-
 function __obj_controller() {
-__instance_init__(this, obj_controller, null, 1, 0, spr_ball16, 0, 54);
+__instance_init__(this, obj_controller, null, 1, 1, null, 0, 12);
 this.on_creation = function() {
 with(this) {
 draw_set_font(font);
 canvas_set_position((window_get_width() - tu_canvas.width) / 2,(window_get_height() - tu_canvas.height) / 2);
 
-lightSize = 512;
+lightSize = 768;
 
 global.time = 0;
 
@@ -1564,7 +1449,7 @@ y = mouse_y - lightSize/2;
 
 if (mouse_check_pressed())
 {
-	instance_create(mouse_x,mouse_y,obj_ball);
+	instance_create(mouse_x,mouse_y,obj_spermatozoon);
 }
 
 global.time += 10;
@@ -1589,7 +1474,8 @@ tu_context.globalCompositeOperation = "overlay";
 tu_context.fillStyle = radialGradient;
 tu_context.fillRect(0, 0, 640, 480);
 tu_context.globalCompositeOperation = "normal";
-
+//tu_context.fillStyle = '#ccc';
+//tu_context.restore();
 
 }
 }
@@ -1597,15 +1483,15 @@ tu_context.globalCompositeOperation = "normal";
 }; var obj_controller = new __obj_controller();
 
 function __obj_spermatozoon() {
-__instance_init__(this, obj_spermatozoon, null, 1, 0, spr_ball8, 1, 55);
+__instance_init__(this, obj_spermatozoon, null, 1, 0, spr_ball8, 1, 13);
 this.on_creation = function() {
 with(this) {
 // For tail
 this.xx = [x];
 this.yy = [y];
 this.time = random(111);
-this.len = 2 + random(2);
-this.sg = 7 + random(2);
+this.len = 4 + random(2);
+this.sg = 6;
 
 for (i=1;i<=this.sg;i++)
 {
@@ -1623,11 +1509,13 @@ this.spd=Math.sqrt(vx*vx + vy*vy);
 
 this.fx=0; 
 this.fy=0;
-this.r = 8;
+this.r = 6;
 this.mass = this.r;
 
 this.vx=-1+random(2); 
 this.vy=-1+random(2);
+
+
 // For bouncing
 }
 };
@@ -1638,6 +1526,7 @@ if (x > room_width ) {x = 0;}
 if (y > room_height) {y = 0;}
 if (y < 0) {y = room_height;}
 if (x < 0) {x = room_width;}
+
 
 // For bouncing
 x+=this.vx; 
@@ -1654,8 +1543,8 @@ this.dir = point_direction(xprevious,yprevious,x,y);
 this.spd = Math.sqrt(vx*vx + vy*vy);
 
 // For tail
-var lx = x + lengthdir_x(sin(this.time + global.time/100)*min(8,this.spd*8),this.dir+90);
-var ly = y + lengthdir_y(sin(this.time + global.time/100)*min(8,this.spd*8),this.dir+90);
+var lx = x + lengthdir_x(sin(this.time + global.time/100)*min(6,this.spd*8),this.dir+90);
+var ly = y + lengthdir_y(sin(this.time + global.time/100)*min(6,this.spd*8),this.dir+90);
 
 var dis_t = point_distance(this.xx[0],this.yy[0], lx,ly);
 var dir_t = point_direction(this.xx[0],this.yy[0],lx,ly);
@@ -1727,14 +1616,26 @@ this.on_draw = function() {
 if (this.visible == 1) {
 __handle_sprite__(this);
 with(this) {
-draw_set_color(90,80,70);
+draw_set_color(150,140,130);
 for(i=1;i<=sg;i++)
-{      
+{   
+
+	if (i<floor(sg/2))
+	{
+		draw_set_linewidth(2);
+	}
+	else
+	{
+		draw_set_linewidth(1);
+	}
+	
+	//draw_set_linewidth(min(2,sg/i));
 	draw_line(this.xx[i],this.yy[i],this.xx[i-1],this.yy[i-1]);
 }   
 draw_set_color(255,255,255);
 
-draw_sprite(sprite_index,0,x,y);
+//draw_sprite_ext(sprite_index,0,x,y,1,1,this.dir,1);
+draw_sprite_ext(sprite_index,0,xx[0],yy[0],1,1,point_direction(xx[2],yy[2],xx[0],yy[0]),1);
 }
 }
 };
@@ -1749,25 +1650,17 @@ function __scene_12() {
 this.tiles = [
 ];
 this.objects = [
+[{o:obj_spermatozoon, x:117, y:45}],
 [{o:obj_spermatozoon, x:73, y:311}],
-[{o:obj_spermatozoon, x:441, y:257}],
-[{o:obj_spermatozoon, x:103, y:133}],
-[{o:obj_spermatozoon, x:201, y:463}],
 [{o:obj_spermatozoon, x:185, y:131}],
+[{o:obj_spermatozoon, x:441, y:257}],
 [{o:obj_controller, x:288, y:104}],
 [{o:obj_spermatozoon, x:585, y:297}],
-[{o:obj_spermatozoon, x:539, y:211}],
-[{o:obj_spermatozoon, x:183, y:231}],
-[{o:obj_spermatozoon, x:305, y:255}],
 [{o:obj_spermatozoon, x:179, y:371}],
-[{o:obj_spermatozoon, x:471, y:357}],
-[{o:obj_spermatozoon, x:559, y:457}],
-[{o:obj_spermatozoon, x:547, y:43}],
-[{o:obj_spermatozoon, x:117, y:45}],
-[{o:obj_spermatozoon, x:401, y:105}],
+[{o:obj_spermatozoon, x:539, y:211}],
 [{o:obj_spermatozoon, x:157, y:271}],
 [{o:obj_spermatozoon, x:261, y:309}],
-[{o:obj_spermatozoon, x:311, y:421}]];
+[{o:obj_spermatozoon, x:547, y:43}]];
 this.start = function() {
 __room_start__(this, scene_12, 640, 480, 60, 210, 190, 190, null, 0, 0, 0, 640, 480, null, 50, 50);
 };
@@ -1778,40 +1671,7 @@ function __scene_12_dup() {
 this.tiles = [
 ];
 this.objects = [
-[{o:obj_ball, x:613, y:174}],
-[{o:obj_ball, x:37, y:190}],
-[{o:obj_ball, x:561, y:20}],
-[{o:obj_ball, x:45, y:450}],
-[{o:obj_ball, x:435, y:380}],
-[{o:obj_ball, x:387, y:248}],
-[{o:obj_ball, x:470, y:283}],
-[{o:obj_ball, x:61, y:12}],
-[{o:obj_ball, x:408, y:149}],
-[{o:obj_ball, x:359, y:172}],
-[{o:obj_ball, x:46, y:281}],
-[{o:obj_ball, x:183, y:454}],
-[{o:obj_ball, x:65, y:92}],
-[{o:obj_ball, x:152, y:75}],
-[{o:obj_ball, x:309, y:266}],
-[{o:obj_ball, x:291, y:150}],
-[{o:obj_ball, x:237, y:208}],
-[{o:obj_ball, x:117, y:288}],
-[{o:obj_ball, x:597, y:438}],
-[{o:obj_ball, x:249, y:40}],
-[{o:obj_ball, x:313, y:426}],
-[{o:obj_ball, x:220, y:107}],
-[{o:obj_controller, x:337, y:83}],
-[{o:obj_ball, x:503, y:76}],
-[{o:obj_ball, x:68, y:397}],
-[{o:obj_ball, x:566, y:351}],
-[{o:obj_ball, x:185, y:302}],
-[{o:obj_ball, x:280, y:327}],
-[{o:obj_ball, x:510, y:443}],
-[{o:obj_ball, x:136, y:191}],
-[{o:obj_ball, x:181, y:400}],
-[{o:obj_ball, x:370, y:409}],
-[{o:obj_ball, x:522, y:199}],
-[{o:obj_ball, x:417, y:16}]];
+[{o:obj_controller, x:337, y:83}]];
 this.start = function() {
 __room_start__(this, scene_12_dup, 640, 480, 60, 210, 190, 190, null, 0, 0, 0, 640, 480, null, 50, 50);
 };
