@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>AxxonSoft web PRF</title>
+</head>
+
+<style>
+	table {
+		overflow: hidden;
+		border-collapse:collapse; 
+		width:100%; 
+		text-align:center;}
+	th{
+		font-size:18px; color:#ffffff; border: 1px solid #000000;
+		padding: 6px;
+		position: relative;}
+	td{
+		font-size:16px; color:#000000; border: 1px solid #000000;
+		padding: 6px;
+		position: relative;}
+
+
+	tr:hover{background-color:#e3e3e3}
+	
+
+	.mobile-table{width: 100%; max-width: 100%; overflow-x: auto;}
+</style>
+
+<script language="javascript">
+
+var config_string = "";
+function get_text_from_config(var_name)
+{
+       var string = window.location.search.substring(1);
+	   console.log("Config = " + string);
+       var vars = string.split("&");
+       for (var i=0; i < vars.length; i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == var_name)
+			   {
+					console.log(var_name + " founded, var = " + pair[1]);
+					var text_ = decodeURI(pair[1]);//= pair[1].replace("%"," ");
+					return text_;
+			   }
+       }
+       return(false);
+}
+
+
+function load_config()
+{	
+	var contEditables = document.querySelectorAll('[contenteditable]');
+	for (var i = 0; i < contEditables.length; i++) 
+	{
+		var cell = contEditables[i];
+		var text_ = get_text_from_config(cell.parentNode.id + i);
+		if (text_ != "")
+		{
+			cell.textContent = text_;
+		}
+	}
+}
+
+function refresh_config()
+{
+	config_string = ""
+	var contEditables = document.querySelectorAll('[contenteditable]');
+	for (var i = 0; i < contEditables.length; i++) 
+	{
+		var cell = contEditables[i];
+		if (cell.textContent != "")
+		{
+			config_string += "&" + cell.parentNode.id + i + "=" + cell.textContent;
+		}
+	}
+	var selectors = document.querySelectorAll('select');
+	for (var i = 0; i < selectors.length; i++) 
+	{
+		var cell = selectors[i];
+		if (cell.value != "")
+		{
+			var cell_parent_id = cell.parentNode.parentNode.id
+			console.log("parent node id =  " + cell_parent_id);
+			config_string += "&" + cell_parent_id + i + "=" + cell.value;
+		}
+	}
+	console.log("New config =  " + config_string);
+	history.pushState({},'','?'+ config_string);
+}
+
+
+ 
+</script>
+
+<body onload="javascript:load_config()"> 
+
+<header>AxxonSoft web PRF</header>
+
+
+<article>
+<table>
+	<tbody>
+		<tr id="proj">
+			<td>PROJECT TITLE</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()">Project XXX</td>
+		</tr>
+	</tbody>
+</table>
+
+<div>
+.
+</div>
+
+<table>
+	<tbody>
+		<tr id="loc"  style = "background-color:#4472c4"> 
+			<th>Location (Number / Title / Label )</th>
+			<th contenteditable='true' onblur="javascript:refresh_config()">Location 1</th>
+			<th contenteditable='true' onblur="javascript:refresh_config()">Location 2</th>
+			<th contenteditable='true' onblur="javascript:refresh_config()">Location 3</th>
+			<th contenteditable='true' onblur="javascript:refresh_config()">Location 4</th>
+		</tr>
+		<tr id="act">
+			<td>Activity (High, Medium, Low)</td>
+			<td onchange="javascript:refresh_config()"> 
+				<select>        
+					<option value="High">High</option>
+					<option value="Medium">Medium</option>
+					<option value="Low">Low</option>
+				</select> 
+			</td>
+			<td onchange="javascript:refresh_config()"> 
+				<select>        
+					<option value="High">High</option>
+					<option value="Medium">Medium</option>
+					<option value="Low">Low</option>
+				</select> 
+			</td>
+			<td onchange="javascript:refresh_config()"> 
+				<select>        
+					<option value="High">High</option>
+					<option value="Medium">Medium</option>
+					<option value="Low">Low</option>
+				</select> 
+			</td>
+			<td onchange="javascript:refresh_config()"> 
+				<select>        
+					<option value="High">High</option>
+					<option value="Medium">Medium</option>
+					<option value="Low">Low</option>
+				</select> 
+			</td>
+		</tr>
+		<tr id="cam">
+			<td>Camera model</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="rfcr">
+			<td>Resolution/FPS/Compression of cameras for recording</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="rfca">
+			<td>Resolution/FPS/Compression of cameras for displaying and analytics</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="gpu">
+			<td>Possibility of using GPU for analytics</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="arch">
+			<td>Recording Storage - Archive depth (days)</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="hours">
+			<td>Number of hours of guaranteed recording per day</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="sdcs">
+			<td>No. of simultaneously displayed cameras on server</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>		
+		<tr id="sdcc">
+			<td>No. of simultaneously displayed cameras on remote client</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>	
+		<tr id="nrc">
+			<td>No. of Remote clients</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>			
+		<tr id="fo">
+			<td>Failover (Yes/No, type: 1+1, N+1)</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>			
+		<tr id="vw">
+			<td>Videowall/Simultaneously displayed cameras/No. of monitors</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>		
+		<tr id="eec">
+			<td>External Event Capture (Access control, 3rd party system)</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>		
+		
+		
+		<tr style= "background-color:#70ad47"> 
+			<th>General detectors:</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		<tr id="md">
+			<td>Motion detection</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="sd">
+			<td>Service detector</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="vmda">
+			<td>Object tracker (VMDA)</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="mqfs">
+			<td>MomentQuest Forensic Search & Time Compressor</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="sfd">
+			<td>Smoke/Fire Detection</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="tnt">
+			<td>Tag & Track</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="wld">
+			<td>Water Level Detector</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		
+		
+		<tr style= "background-color:#d19d00"> 
+			<th>Face recognition:</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		<tr id="fd">
+			<td>Face Detection and Search</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="fr">
+			<td>Face Recognition (black/white list) - Real Time </td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="fmd">
+			<td>Face Mask Detection</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+	
+		<tr style= "background-color:#ed7d31"> 
+			<th>License Plate Recognition:</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		<tr id="lpf">
+			<td>License Plate Detection and Search (Freeflow)</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="lpp">
+			<td>License Plate Detection and Search (Parking)</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+
+
+		<tr style= "background-color:#44546a"> 
+			<th>Neural Analytics:</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		<tr id="hvod">
+			<td>Human/Vehicle Object Detection</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="pose">
+			<td>Behaviour Analytics (Pose Detection)</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>	
+		<tr id="ppe">
+			<td>Personal Protective Equipment Detection</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="cai">
+			<td>Custom AI Neural Analytics</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>		
+
+
+		<tr style= "background-color:#5a3675"> 
+			<th>Retail Pack Analytics:</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		<tr id="pplc">
+			<td>People Counting</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+		<tr id="htm">
+			<td>Heat Map</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>	
+		<tr id="qud">
+			<td>Queue Detection</td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+			<td contenteditable='true' onblur="javascript:refresh_config()"></td>
+		</tr>
+
+
+	</tbody>
+</table>
+
+
+
+
+</article>
+
+ 
+</body>
+</html>
